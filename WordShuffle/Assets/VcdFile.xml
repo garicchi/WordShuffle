@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<VoiceCommands xmlns="http://schemas.microsoft.com/voicecommands/1.2">
+  <CommandSet xml:lang="ja-JP">
+    <CommandPrefix>英単語</CommandPrefix>
+    <Example>英単語 勉強したい</Example>
+    <Command Name="Command1">
+      <Example>英単語 勉強したい</Example>
+      <ListenFor>勉強[したい]</ListenFor>
+      <Feedback>がんばってください</Feedback>
+      <Navigate />
+    </Command>
+  </CommandSet>
+</VoiceCommands>

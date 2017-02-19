@@ -1,0 +1,84 @@
+﻿<Page
+    x:Class="WordShuffle.Pages.FavoritePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:WordShuffle.Pages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    DataContext="{Binding Main,Source={StaticResource ViewModelLocator}}" Loaded="Page_Loaded"
+    >
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Pivot x:Name="pivot_main" SelectionChanged="pivot_main_SelectionChanged">
+            <PivotItem x:Name="pivot_favorite" Header="お気に入り単語">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="35"/>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition/>
+                        <RowDefinition Height="60"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0" Orientation="Horizontal">
+                        <TextBlock Text="登録単語数 = " FontSize="20" />
+                        <TextBlock Text="{Binding TempModel.FavoriteList.Count}" FontSize="20" />
+                    </StackPanel>
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="単語" Grid.Column="0" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        <TextBlock Text="意味" Grid.Column="1" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        <TextBlock Text="記憶レート(%)" Grid.Column="2" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Grid>
+                    <ListBox Grid.Row="2" x:Name="listBox_favorite" ItemsSource="{Binding TempModel.FavoriteList}" ItemContainerStyle="{StaticResource ListBoxItemStyle}" ItemTemplate="{StaticResource wordListBoxTemplate}" >
+                    </ListBox>
+                    <CommandBar VerticalAlignment="Bottom" Grid.Row="3">
+                        <CommandBar.PrimaryCommands>
+                            <AppBarButton x:Name="button_synthesize" Icon="Volume" Label="読み上げ" Click="button_synthesize_Click" />
+                            <AppBarButton x:Name="button_unFavorite" Icon="UnFavorite" Label="登録解除" Click="button_unFavorite_Click" />
+                            <AppBarButton Icon="Save" Label="エクスポート" Command="{Binding ExportFavoriteCommand}" />
+                            <AppBarButton x:Name="button_clear" Icon="Clear" Label="一括解除" Command="{Binding ClearFavoriteCommand}" />
+                            
+                        </CommandBar.PrimaryCommands>
+                    </CommandBar>
+                </Grid>
+            </PivotItem>
+            <PivotItem x:Name="pivot_noRemember" Header="忘れている単語">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="35"/>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition/>
+                        <RowDefinition Height="60"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0" Orientation="Horizontal">
+                        <TextBlock Text="登録単語数 = " FontSize="20" />
+                        <TextBlock Text="{Binding TempModel.TopNoRememberList.Count}" FontSize="20" />
+                    </StackPanel>
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="単語" Grid.Column="0" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        <TextBlock Text="意味" Grid.Column="1" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        <TextBlock Text="記憶レート(%)" Grid.Column="2" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Grid>
+                    <ListBox Grid.Row="2" x:Name="listBox_noRemember" ItemsSource="{Binding TempModel.TopNoRememberList}" ItemContainerStyle="{StaticResource ListBoxItemStyle}" ItemTemplate="{StaticResource wordListBoxTemplate}" >
+                    </ListBox>
+                    <CommandBar VerticalAlignment="Bottom" Grid.Row="3">
+                        <CommandBar.PrimaryCommands>
+                            <AppBarButton x:Name="button_synthesizeTopNoRemember" Icon="Volume" Label="読み上げ" Click="button_synthesizeTopNoRemember_Click" />
+                            <AppBarButton Icon="Save" Label="エクスポート" Command="{Binding ExportTopNoRememberCommand}" />
+                            <AppBarButton Icon="Clear" Label="一括解除" Command="{Binding ClearTopNoRememberCommand}" />
+                        </CommandBar.PrimaryCommands>
+                    </CommandBar>
+                </Grid>
+            </PivotItem>
+        </Pivot>
+
+    </Grid>
+</Page>

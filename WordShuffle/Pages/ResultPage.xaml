@@ -1,0 +1,94 @@
+﻿<Page
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:WordShuffle.Pages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:WordShuffle.Controls"
+    x:Class="WordShuffle.Pages.ResultPage"
+    mc:Ignorable="d"
+    DataContext="{Binding Main, Source={StaticResource ViewModelLocator}}"
+    >
+
+    <Page.BottomAppBar>
+        <CommandBar>
+
+            <AppBarButton x:Name="button_backTitle" Icon="Back" Label="タイトルへ" Click="button_backTitle_Click"/>
+            <AppBarButton x:Name="button_repeat" Icon="Refresh" Label="もういちど" Click="button_repeat_Click"/>
+            <AppBarButton Icon="Save" Label="間違えた単語のエクスポート" Command="{Binding SaveNoRememberCommand}"/>
+            <AppBarButton x:Name="button_share" Icon="Send" Label="結果をシェア" Click="button_share_Click">
+                <FlyoutBase.AttachedFlyout>
+                    <Flyout x:Name="flyout_share">
+                        <Grid Width="400" Height="400">
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition Height="73.6"/>
+                            </Grid.RowDefinitions>
+                            <Image x:Name="image_share" Source="ms-appx:///Assets/share.PNG" />
+                            <Button x:Name="button_shareOK" Content="シェア" Grid.Row="1" Width="100" Height="40" HorizontalAlignment="Center" FontSize="24" Background="{StaticResource ApplicationThemeBrush}" Foreground="White" Click="button_shareOK_Click" />
+                        </Grid>
+                    </Flyout>
+                </FlyoutBase.AttachedFlyout>
+            </AppBarButton>
+        </CommandBar>
+    </Page.BottomAppBar>
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="48"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <TextBlock x:Name="text_saveStatus" HorizontalAlignment="Left" Margin="10,0,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Center"/>
+        <Button x:Name="button" Grid.Row="0" Content="間違えた単語のエクスポート" Command="{Binding SaveNoRememberCommand}" HorizontalAlignment="Right" Margin="0,0,20,0" VerticalAlignment="Center" Width="190" Background="{StaticResource ApplicationThemeBrush}" Foreground="White" Height="38"/>
+        <Grid Grid.Row="1">
+            <ScrollViewer HorizontalScrollMode="Disabled">
+                <StackPanel x:Name="stack_result" Background="{StaticResource ApplicationPageBackgroundThemeBrush}" Orientation="Vertical">
+                    <TextBlock Text="学習結果" FontSize="36" Margin="0,20,0,0" />
+                    <StackPanel Orientation="Horizontal" BorderThickness="10,0,0,0">
+                        <TextBlock Text="{Binding MainModel.MaxWordNum}" FontSize="28" Margin="10,0,0,0" />
+                        <TextBlock Text="語中" FontSize="28" Margin="10,0,0,0" />
+                        <TextBlock Text="{Binding MainModel.RememberCount}" FontSize="28" Margin="10,0,0,0" />
+                        <TextBlock Text="語覚えていました" FontSize="28" Margin="10,0,0,0" />
+                    </StackPanel>
+                    <Grid Height="250" Width="250">
+                        <controls:RateProgressRing Rate="1" Stroke="#33000000" IsTextScaleFactorEnabled="False" />
+                        <controls:RateProgressRing x:Name="progress_resultRate" Rate="{Binding MainModel.RememberRate}" Stroke="{StaticResource ApplicationThemeBrush}" />
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <TextBlock Text="{Binding MainModel.RememberRate,Converter={StaticResource rateToPercentConverter}}"  FontSize="96" Foreground="#FF4B4B4B" />
+                            <TextBlock Text="%"  FontSize="96" Foreground="#FF4B4B4B" />
+                        </StackPanel>
+                    </Grid>
+                    <TextBlock Text="忘れている単語トップ5" FontSize="36" Margin="0,20,0,0" />
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="単語" Grid.Column="0" FontSize="28" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        <TextBlock Text="意味" Grid.Column="1" FontSize="28" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <TextBlock Text="記憶レート(%)" Grid.Column="2" FontSize="28" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Grid>
+                    <ListBox x:Name="listBox_noRemember" ItemsSource="{Binding MainModel.TopNoRememberList}" ItemContainerStyle="{StaticResource ListBoxItemStyle}" SelectionChanged="listBox_noRemember_SelectionChanged" >
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*" />
+                                        <ColumnDefinition Width="1*" />
+                                        <ColumnDefinition Width="1*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="{Binding Word}" Grid.Column="0" FontSize="28" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                    <TextBlock Text="{Binding Mean}" Grid.Column="1" FontSize="28" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                    <TextBlock Text="{Binding RememberRate,Converter={StaticResource rateToPercentConverter}}" Grid.Column="2" FontSize="28" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </StackPanel>
+            </ScrollViewer>
+
+        </Grid>
+        
+    </Grid>
+</Page>
